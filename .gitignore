@@ -1,0 +1,13 @@
+# Ignorar a pasta do ambiente virtual
+venv/
+env/
+
+# Ignorar arquivos compilados (lixo do python)
+__pycache__/
+*.pyc
+
+# Ignorar banco de dados local
+db.sqlite3
+
+# Arquivos de sistema
+.DS_Store
