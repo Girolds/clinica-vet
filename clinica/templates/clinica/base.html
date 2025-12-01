@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="h-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VetLife System</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+        /* Cor personalizada para a Navbar */
+        .bg-vet {
+            background-color: #20c997 !important; /* Verde Água */
+        }
+        .navbar-dark .navbar-nav .nav-link {
+            color: rgba(255,255,255,.9);
+            font-weight: 500;
+        }
+        .navbar-dark .navbar-nav .nav-link:hover {
+            color: #fff;
+            text-shadow: 0 0 5px rgba(255,255,255,0.3);
+        }
+        
+        /* Sticky Footer */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+        main {
+            flex: 1;
+        }
+
+        /* Estilos do Footer */
+        .footer {
+            background-color: #212529; /* Dark */
+            color: #adb5bd;
+            font-size: 0.9rem;
+        }
+        .footer h5 {
+            color: #fff;
+            font-weight: bold;
+            margin-bottom: 1.2rem;
+            border-bottom: 2px solid #20c997;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+        .footer ul li {
+            margin-bottom: 8px;
+        }
+        .footer-bottom {
+            background-color: #1a1e21;
+            padding: 15px 0;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column h-100">
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-vet shadow">
+            <div class="container">
+                <a class="navbar-brand fw-bold fs-3" href="{% url 'index' %}">
+                    <i class="bi bi-hospital text-white"></i> VetLife
+                </a>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuSuperior">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="menuSuperior">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'animal_lista' %}">Animais</a></li>
+                        </ul>
+
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item">
+                            <span class="text-white small">Versão Beta 1.0</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-shrink-0">
+        <div class="container mt-4">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+
+    <footer class="footer mt-auto pt-5">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-md-5 mb-4">
+                    <h5>Sobre o Projeto</h5>
+                    <p class="mb-2">
+                        Trabalho Final da disciplina de <strong>Programação para Web I</strong>.<br>
+                        Curso: Análise e Desenvolvimento de Sistemas (ADS).
+                    </p>
+                </div>
+
+                <div class="col-md-3 mb-4">
+                    <h5>Tecnologias</h5>
+                    <ul class="list-unstyled text-white-50">
+                        <li><i class="bi bi-check2 text-success"></i> Python & Django 5</li>
+                        <li><i class="bi bi-check2 text-success"></i> Bootstrap 5</li>
+                        <li><i class="bi bi-check2 text-success"></i> SQLite</li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <h5>Integrantes do Grupo</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="bi bi-person-fill text-white"></i> Geraldo Rafael Lopes Benevides
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-person-fill text-white"></i> Júlia Évelyn Magalhães dos Santos
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="footer-bottom text-center">
+            <div class="container">
+                <span class="text-muted small">© 2025 VetLife System - Desenvolvido para fins acadêmicos.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
