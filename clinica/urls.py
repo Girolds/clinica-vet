@@ -16,4 +16,7 @@ urlpatterns = [
     path('agendamentos/', views.agendamento_lista, name='agendamento_lista'),
     path('agendamentos/novo/', views.agendamento_criar, name='agendamento_criar'),
     path('agendamentos/<int:pk>/', views.agendamento_detalhe, name='agendamento_detalhe'),
+    path('tutores/', views.tutor_lista, name='tutor_lista'),
+    path('tutores/novo/', views.tutor_criar, name='tutor_criar'),
+    path('tutores/<int:pk>/', views.tutor_detalhe, name='tutor_detalhe'),
 ]

@@ -114,3 +114,32 @@ def agendamento_detalhe(request, pk):
     agendamento = get_object_or_404(Agendamento, pk=pk)
     contexto = {'agendamento': agendamento, 'titulo': f'Consulta: {agendamento.animal.nome}'}
     return render(request, 'clinica/agendamento_detalhe.html', contexto)
+
+
+def tutor_lista(request):
+    tutores = Tutor.objects.all()
+    contexto = {'tutores': tutores, 'titulo': 'Gerenciar Tutores'}
+    return render(request, 'clinica/tutor_lista.html', contexto)
+
+def tutor_criar(request):
+    if request.method == 'POST':
+        form = TutorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('tutor_lista')
+    else:
+        form = TutorForm()
+    
+    contexto = {'form': form, 'titulo': 'Cadastrar Novo Tutor', 'botao': 'Salvar Tutor'}
+    return render(request, 'clinica/form_generico.html', contexto)
+
+def tutor_detalhe(request, pk):
+    tutor = get_object_or_404(Tutor, pk=pk)
+    animais = Animal.objects.filter(tutor=tutor)
+    
+    contexto = {
+        'tutor': tutor,
+        'animais': animais,
+        'titulo': f'Ficha: {tutor.nome}'
+    }
+    return render(request, 'clinica/tutor_detalhe.html', contexto)
