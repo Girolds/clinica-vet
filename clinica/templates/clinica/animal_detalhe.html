@@ -1,0 +1,26 @@
+{% extends 'clinica/base.html' %}
+
+{% block content %}
+<div class="card mb-3 border-success">
+    <div class="card-header bg-success text-white">
+        <h3>{{ animal.nome }}</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Espécie:</strong> {{ animal.especie }}</p>
+                <p><strong>Raça:</strong> {{ animal.raca }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Tutor (Dono):</strong> 
+                    <a href="{% url 'tutor_detalhe' animal.tutor.pk %}">{{ animal.tutor.nome }}</a>
+                </p>
+            </div>
+        </div>
+        
+        <div class="mt-3">
+            <a href="{% url 'animal_lista' %}" class="btn btn-secondary">Voltar</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
