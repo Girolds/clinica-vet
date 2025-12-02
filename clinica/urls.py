@@ -19,4 +19,5 @@ urlpatterns = [
     path('tutores/', views.tutor_lista, name='tutor_lista'),
     path('tutores/novo/', views.tutor_criar, name='tutor_criar'),
     path('tutores/<int:pk>/', views.tutor_detalhe, name='tutor_detalhe'),
+    path('registrar/', views.registrar_usuario, name='registrar_usuario'),
 ]
