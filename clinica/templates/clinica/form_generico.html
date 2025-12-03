@@ -1,25 +1,72 @@
 {% extends 'clinica/base.html' %}
 
-{% block content %}
+{% block conteudo %}
 <div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card shadow">
-            <div class="card-header bg-primary text-white">
-                <h4 class="mb-0">{{ titulo }}</h4>
+    <div class="col-md-8 col-lg-6">
+        
+        <div class="card border-0 shadow-lg rounded-3">
+            
+            <div class="card-header bg-primary text-white py-3">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-pencil-square fs-4 me-2"></i>
+                    <h4 class="mb-0 fw-bold">{{ titulo }}</h4>
+                </div>
             </div>
-            <div class="card-body">
-                <form method="post">
-                    {% csrf_token %}
-                    
-                    {{ form.as_p }}
-                    
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                        <a href="javascript:history.back()" class="btn btn-secondary me-md-2">Cancelar</a>
-                        <button type="submit" class="btn btn-success">{{ botao|default:"Salvar" }}</button>
+
+            <div class="card-body p-4 bg-white">
+                
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            <div><i class="bi bi-exclamation-circle"></i> {{ error }}</div>
+                        {% endfor %}
                     </div>
+                {% endif %}
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label fw-bold text-secondary">
+                                {{ field.label }}
+                                {% if field.field.required %}<span class="text-danger">*</span>{% endif %}
+                            </label>
+                            
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <div class="form-text text-muted small">
+                                    <i class="bi bi-info-circle"></i> {{ field.help_text }}
+                                </div>
+                            {% endif %}
+
+                            {% if field.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in field.errors %}
+                                        <i class="bi bi-exclamation-triangle"></i> {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    <hr class="my-4">
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="button" class="btn btn-outline-secondary px-4" onclick="history.back()">
+                            Cancelar
+                        </button>
+                        
+                        <button type="submit" class="btn btn-success px-4 shadow-sm">
+                            <i class="bi bi-check-lg"></i> {{ botao|default:"Salvar" }}
+                        </button>
+                    </div>
+
                 </form>
             </div>
         </div>
+
     </div>
 </div>
 {% endblock %}

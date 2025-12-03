@@ -71,14 +71,46 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="menuSuperior">
+                    {% if user.is_authenticated %}
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'agendamento_lista' %}">Agenda</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'animal_lista' %}">Animais</a></li>
-                        </ul>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                Administração
+                            </a>
+                            <ul class="dropdown-menu border-0 shadow">
+                                <li><a class="dropdown-item" href="{% url 'tutor_lista' %}"><i class="bi bi-people"></i> Tutores</a></li>
+                                <li><a class="dropdown-item" href="{% url 'veterinario_lista' %}"><i class="bi bi-person-badge"></i> Veterinários</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'servico_lista' %}"><i class="bi bi-tag"></i> Serviços</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    {% endif %}
 
                     <ul class="navbar-nav ms-auto align-items-center">
-                        <li class="nav-item">
-                            <span class="text-white small">Versão Beta 1.0</span>
-                        </li>
+                        {% if user.is_authenticated %}
+                            <li class="nav-item me-3">
+                                <a href="{% url 'editar_perfil' %}" class="text-white text-decoration-none small btn btn-outline-light border-0">
+                                    <i class="bi bi-person-circle"></i> {{ user.username }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <form action="{% url 'logout' %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-light btn-sm rounded-pill px-3">
+                                        Sair <i class="bi bi-box-arrow-right"></i>
+                                    </button>
+                                </form>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="btn btn-light text-success fw-bold rounded-pill px-4" href="{% url 'login' %}">
+                                    Entrar <i class="bi bi-box-arrow-in-right"></i>
+                                </a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
@@ -96,7 +128,7 @@
                 {% endfor %}
             {% endif %}
 
-            {% block content %}
+            {% block conteudo %}
             {% endblock %}
         </div>
     </main>
@@ -119,6 +151,8 @@
                         <li><i class="bi bi-check2 text-success"></i> Python & Django 5</li>
                         <li><i class="bi bi-check2 text-success"></i> Bootstrap 5</li>
                         <li><i class="bi bi-check2 text-success"></i> SQLite</li>
+                        <li><i class="bi bi-check2 text-success"></i> Git & GitHub</li>
+                        <li><i class="bi bi-check2 text-success"></i> Gemini 3 Pro</li>
                     </ul>
                 </div>
 
@@ -132,6 +166,9 @@
                             <i class="bi bi-person-fill text-white"></i> Júlia Évelyn Magalhães dos Santos
                         </li>
                     </ul>
+                    <p class="small text-muted mt-3">
+                        <i class="bi bi-bullseye"></i> <strong>Objetivo:</strong> Aplicação completa de gestão veterinária com CRUDs, autenticação e permissões.
+                    </p>
                 </div>
 
             </div>

@@ -1,51 +1,80 @@
 {% extends 'clinica/base.html' %}
 
-{% block content %}
-<div class="row justify-content-center mt-5">
-    <div class="col-md-5">
-        <div class="card shadow-lg border-0">
-            <div class="card-header bg-success text-white text-center py-3">
-                <h4 class="mb-0"><i class="bi bi-lock-fill"></i> Acesso Restrito</h4>
+{% block conteudo %}
+<div class="row justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="col-md-5 col-lg-4">
+        
+        <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
+            
+            <div class="card-header bg-success text-white text-center py-4">
+                <h2 class="fw-bold mb-0"><i class="bi bi-hospital"></i> VetLife</h2>
+                <small>Área Restrita</small>
             </div>
-            <div class="card-body p-4">
+
+            <div class="card-body p-4 bg-white">
+                
+                <div class="text-center mb-4">
+                    <h5 class="text-secondary">Bem-vindo de volta!</h5>
+                    <p class="text-muted small">Insira suas credenciais para acessar o sistema.</p>
+                </div>
+
+                {% if form.errors %}
+                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <div>Usuário ou senha incorretos.</div>
+                    </div>
+                {% endif %}
+
                 <form method="post">
                     {% csrf_token %}
-                    
-                    {% if form.errors %}
-                        <div class="alert alert-danger text-center mb-3">
-                            <small>Usuário ou senha incorretos.</small>
-                        </div>
-                    {% endif %}
 
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Usuário</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="bi bi-person"></i></span>
-                            <input type="text" name="username" class="form-control" placeholder="Digite seu usuário" autofocus required>
-                        </div>
+                        <label for="id_username" class="form-label fw-bold text-secondary">
+                            <i class="bi bi-person-fill"></i> Usuário
+                        </label>
+                        <input type="text" name="username" class="form-control form-control-lg bg-light" 
+                               id="id_username" placeholder="Ex: admin" autofocus required>
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label fw-bold">Senha</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="bi bi-key"></i></span>
-                            <input type="password" name="password" class="form-control" placeholder="Digite sua senha" required>
-                        </div>
+                        <label for="id_password" class="form-label fw-bold text-secondary">
+                            <i class="bi bi-lock-fill"></i> Senha
+                        </label>
+                        <input type="password" name="password" class="form-control form-control-lg bg-light" 
+                               id="id_password" placeholder="••••••••" required>
                     </div>
 
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-success btn-lg">Entrar</button>
+                        <button type="submit" class="btn btn-success btn-lg shadow-sm hover-effect">
+                            Acessar Sistema <i class="bi bi-box-arrow-in-right"></i>
+                        </button>
                     </div>
                 </form>
-
-                <hr class="my-4">
-
-                <div class="text-center">
-                    <p class="mb-1 text-muted">Ainda não tem conta?</p>
-                    <a href="{% url 'registrar_usuario' %}" class="btn btn-outline-secondary btn-sm">Criar conta nova</a>
-                </div>
             </div>
-        </div>
+
+            <div class="card-footer bg-light text-center py-3">
+    <small class="text-muted">Ainda não tem cadastro?</small>
+    <br>
+    <a href="{% url 'registrar_usuario' %}" class="text-decoration-none text-success fw-bold small">
+        <i class="bi bi-person-plus"></i> Criar uma conta
+    </a>
+    <div class="mt-2">
+        <a href="{% url 'index' %}" class="text-decoration-none text-secondary small">
+            <i class="bi bi-arrow-left"></i> Voltar para o Site
+        </a>
     </div>
 </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .hover-effect {
+        transition: transform 0.2s;
+    }
+    .hover-effect:hover {
+        transform: translateY(-2px);
+    }
+</style>
 {% endblock %}

@@ -1,25 +1,37 @@
 {% extends 'clinica/base.html' %}
-{% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h1><i class="bi bi-tag"></i> Tabela de Preços</h1>
-    <a href="{% url 'servico_criar' %}" class="btn btn-warning">Novo Serviço</a>
+
+{% block conteudo %}
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center py-3">
+        <h4 class="mb-0 fw-bold"><i class="bi bi-tag-fill"></i> Tabela de Serviços</h4>
+        <a href="{% url 'servico_criar' %}" class="btn btn-dark btn-sm fw-bold">
+            <i class="bi bi-plus-lg"></i> Adicionar
+        </a>
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="bg-light">
+                <tr>
+                    <th class="ps-4">Descrição do Serviço</th>
+                    <th>Valor Atual</th>
+                    <th class="text-end pe-4">Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for servico in servicos %}
+                <tr>
+                    <td class="ps-4 fw-bold">{{ servico.descricao }}</td>
+                    <td class="text-success fw-bold fs-5">R$ {{ servico.valor }}</td>
+                    <td class="text-end pe-4">
+                        <a href="{% url 'servico_editar' servico.pk %}" class="btn btn-sm btn-outline-dark"><i class="bi bi-pencil"></i> Editar</a>
+                        <a href="{% url 'servico_deletar' servico.pk %}" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="3" class="text-center py-4 text-muted">Nenhum serviço disponível.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
-<table class="table table-striped table-hover">
-    <thead class="table-dark">
-        <tr>
-            <th>Descrição</th>
-            <th>Valor (R$)</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for servico in servicos %}
-        <tr>
-            <td>{{ servico.descricao }}</td>
-            <td>R$ {{ servico.valor }}</td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="2">Nenhum serviço cadastrado.</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
 {% endblock %}
