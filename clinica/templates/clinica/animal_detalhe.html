@@ -1,25 +1,64 @@
 {% extends 'clinica/base.html' %}
 
-{% block content %}
-<div class="card mb-3 border-success">
-    <div class="card-header bg-success text-white">
-        <h3>{{ animal.nome }}</h3>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-6">
-                <p><strong>Espécie:</strong> {{ animal.especie }}</p>
-                <p><strong>Raça:</strong> {{ animal.raca }}</p>
+{% block conteudo %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
+            
+            <div class="card-header bg-success text-white text-center py-4">
+                <div class="bg-white text-success rounded-circle mx-auto d-flex align-items-center justify-content-center shadow-sm mb-3" 
+                     style="width: 80px; height: 80px;">
+                    <i class="bi bi-postcard-heart-fill display-5"></i>
+                </div>
+                <h3 class="mb-0 fw-bold">{{ animal.nome }}</h3>
+                <span class="badge bg-white text-success bg-opacity-75 mt-2 px-3 rounded-pill">
+                    Paciente
+                </span>
             </div>
-            <div class="col-md-6">
-                <p><strong>Tutor (Dono):</strong> 
-                    <a href="{% url 'tutor_detalhe' animal.tutor.pk %}">{{ animal.tutor.nome }}</a>
-                </p>
+
+            <div class="card-body p-4 bg-white">
+                
+                <div class="row g-3 mb-4 text-center">
+                    <div class="col-6">
+                        <div class="p-3 border rounded bg-light h-100">
+                            <small class="text-muted fw-bold text-uppercase d-block mb-1">Espécie</small>
+                            <span class="fs-5 fw-bold text-dark"><i class="bi bi-paw"></i> {{ animal.especie }}</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-3 border rounded bg-light h-100">
+                            <small class="text-muted fw-bold text-uppercase d-block mb-1">Raça</small>
+                            <span class="fs-5 fw-bold text-dark">{{ animal.raca }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-success mb-3">
+                    <div class="card-body d-flex align-items-center justify-content-between p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-success text-white rounded-circle p-2 me-3">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                            <div>
+                                <small class="text-uppercase text-muted fw-bold" style="font-size: 0.7rem;">Tutor Responsável</small>
+                                <h6 class="mb-0 fw-bold text-success">{{ animal.tutor.nome }}</h6>
+                            </div>
+                        </div>
+                        <a href="{% url 'tutor_detalhe' animal.tutor.pk %}" class="btn btn-sm btn-outline-success rounded-circle" title="Ver Tutor">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 mt-4">
+                    <a href="{% url 'animal_editar' animal.pk %}" class="btn btn-success shadow-sm">
+                        <i class="bi bi-pencil-square"></i> Editar Dados
+                    </a>
+                    <a href="{% url 'animal_lista' %}" class="btn btn-outline-secondary">
+                        Voltar para Lista
+                    </a>
+                </div>
             </div>
-        </div>
-        
-        <div class="mt-3">
-            <a href="{% url 'animal_lista' %}" class="btn btn-secondary">Voltar</a>
         </div>
     </div>
 </div>

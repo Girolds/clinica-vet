@@ -1,19 +1,33 @@
 {% extends 'clinica/base.html' %}
 
-{% block content %}
+{% block conteudo %}
 <div class="p-5 mb-4 bg-white rounded-3 shadow-sm border-start border-5 border-success">
     <div class="container-fluid py-2">
         <h1 class="display-5 fw-bold text-success">Bem-vindo à VetLife 🐾</h1>
         <p class="col-md-8 fs-5 text-muted">
-            Sistema integrado de gestão veterinária. 
-            <br>
-            <span class="badge bg-warning text-dark">Versão quase alpha</span>
+            Sistema integrado de gestão veterinária. Gerencie pacientes, agendamentos e tutores de forma simples e rápida.
         </p>
+        {% if not user.is_authenticated %}
+            <a class="btn btn-primary btn-lg mt-2" href="{% url 'login' %}">Fazer Login</a>
+        {% else %}
+            <p class="text-success fw-bold"><i class="bi bi-check-circle"></i> Sistema Operacional - Usuário Logado: {{ user.username }}</p>
+        {% endif %}
     </div>
 </div>
 
 <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
     
+    <div class="col">
+        <div class="card h-100 border-0 shadow hover-up">
+            <div class="card-body text-center">
+                <div class="display-4 text-primary mb-3"><i class="bi bi-calendar-check"></i></div>
+                <h5 class="card-title">Agendamentos</h5>
+                <p class="card-text text-muted">Consulte a agenda do dia e marque novas consultas.</p>
+                <a href="{% url 'agendamento_lista' %}" class="btn btn-outline-primary w-100 stretched-link">Acessar Agenda</a>
+            </div>
+        </div>
+    </div>
+
     <div class="col">
         <div class="card h-100 border-0 shadow hover-up">
             <div class="card-body text-center">
@@ -30,7 +44,7 @@
             <div class="card-body text-center">
                 <div class="display-4 text-info mb-3"><i class="bi bi-people"></i></div>
                 <h5 class="card-title">Tutores</h5>
-                <p class="card-text text-muted">Base de clientes e proprietários.</p>
+                <p class="card-text text-muted">Base de clientes e proprietários dos pets.</p>
                 <a href="{% url 'tutor_lista' %}" class="btn btn-outline-info w-100 stretched-link">Gerenciar Clientes</a>
             </div>
         </div>
@@ -52,24 +66,13 @@
             <div class="card-body text-center">
                 <div class="display-4 text-warning mb-3"><i class="bi bi-tag"></i></div>
                 <h5 class="card-title">Serviços</h5>
-                <p class="card-text text-muted">Tabela de preços e serviços.</p>
+                <p class="card-text text-muted">Tabela de preços e serviços disponíveis.</p>
                 <a href="{% url 'servico_lista' %}" class="btn btn-outline-warning w-100 stretched-link">Tabela de Preços</a>
             </div>
         </div>
     </div>
 
-    <div class="col">
-        <div class="card h-100 border-0 shadow hover-up">
-            <div class="card-body text-center">
-                <div class="display-4 text-primary mb-3"><i class="bi bi-calendar-check"></i></div>
-                <h5 class="card-title">Agendamentos</h5>
-                <p class="card-text text-muted">Consulte a agenda do dia e marque novas consultas.</p>
-                <a href="{% url 'agendamento_lista' %}" class="btn btn-outline-primary w-100 stretched-link">Acessar Agenda</a>
-            </div>
-        </div>
-    </div>
-
-    </div>
+</div>
 
 <style>
     .hover-up { transition: transform 0.2s ease; }

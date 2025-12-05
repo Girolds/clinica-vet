@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Tutor, Veterinario, Animal, Servico, Agendamento
 
-
+# Exibe colunas personalizadas na listinha
 @admin.register(Tutor)
 class TutorAdmin(admin.ModelAdmin):
     list_display = ('nome', 'telefone', 'cpf', 'usuario')
@@ -14,7 +14,8 @@ class VeterinarioAdmin(admin.ModelAdmin):
 @admin.register(Animal)
 class AnimalAdmin(admin.ModelAdmin):
     list_display = ('nome', 'especie', 'raca', 'tutor')
-    list_filter = ('especie',) 
+    list_filter = ('especie',) # Faz um filtrinho por espécie
+
 @admin.register(Servico)
 class ServicoAdmin(admin.ModelAdmin):
     list_display = ('descricao', 'valor')

@@ -1,28 +1,28 @@
 {% extends 'clinica/base.html' %}
 
 {% block conteudo %}
-<div class="row justify-content-center align-items-center mb-5" style="min-height: 80vh;">
-    <div class="col-md-6 col-lg-5">
-        
-        <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-lg rounded-3">
             
-            <div class="card-header bg-success text-white text-center py-4">
-                <h2 class="fw-bold mb-0"><i class="bi bi-person-plus-fill"></i> Criar Conta</h2>
-                <small>Junte-se à VetLife</small>
+            <div class="card-header bg-danger text-white py-3">
+                <h4 class="mb-0 fw-bold"><i class="bi bi-key-fill"></i> Alterar Senha</h4>
             </div>
 
             <div class="card-body p-4 bg-white">
-                
                 <form method="post">
                     {% csrf_token %}
 
                     {% for field in form %}
                         <div class="mb-3">
                             <label class="form-label fw-bold text-secondary">{{ field.label }}</label>
+                            
                             {{ field }}
+                            
                             {% if field.help_text %}
                                 <div class="form-text small text-muted">{{ field.help_text }}</div>
                             {% endif %}
+                            
                             {% for error in field.errors %}
                                 <div class="text-danger small mt-1"><i class="bi bi-exclamation-triangle"></i> {{ error }}</div>
                             {% endfor %}
@@ -30,22 +30,16 @@
                     {% endfor %}
 
                     <div class="d-grid gap-2 mt-4">
-                        <button type="submit" class="btn btn-success btn-lg shadow-sm">
-                            Cadastrar-se
+                        <button type="submit" class="btn btn-danger btn-lg shadow-sm">
+                            Confirmar Nova Senha
                         </button>
+                        <a href="{% url 'editar_perfil' %}" class="btn btn-link text-secondary text-decoration-none text-center">
+                            Voltar
+                        </a>
                     </div>
                 </form>
             </div>
-
-            <div class="card-footer bg-light text-center py-3">
-                <small class="text-muted">Já tem uma conta?</small>
-                <br>
-                <a href="{% url 'login' %}" class="text-decoration-none text-success fw-bold">
-                    Fazer Login
-                </a>
-            </div>
         </div>
-
     </div>
 </div>
 {% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'clinica/base.html' %}
+
+{% block conteudo %}
+<div class="alert alert-danger shadow">
+    <h4>Tem certeza que deseja remover o serviço "{{ objeto.descricao }}"?</h4>
+    <p>Agendamentos futuros com este serviço podem ficar incompletos.</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+        <a href="{% url 'servico_lista' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'clinica/base.html' %}
+
+{% block conteudo %}
+<div class="alert alert-danger shadow">
+    <h4>Tem certeza que deseja excluir o animal "{{ animal.nome }}"?</h4>
+    <p>Essa ação não pode ser desfeita.</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Sim, Deletar</button>
+        <a href="{% url 'animal_lista' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

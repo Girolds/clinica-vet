@@ -1,22 +1,42 @@
 {% extends 'clinica/base.html' %}
 
-{% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h1><i class="bi bi-people"></i> Lista de Tutores</h1>
-    <a href="{% url 'tutor_criar' %}" class="btn btn-info text-white">Novo Tutor</a>
-</div>
-
-<div class="list-group">
-    {% for tutor in tutores %}
-        <a href="{% url 'tutor_detalhe' tutor.pk %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-            <div>
-                <h5 class="mb-1">{{ tutor.nome }}</h5>
-                <small class="text-muted">CPF: {{ tutor.cpf }}</small>
-            </div>
-            <span class="badge bg-primary rounded-pill"><i class="bi bi-telephone"></i> {{ tutor.telefone }}</span>
+{% block conteudo %}
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-info text-white d-flex justify-content-between align-items-center py-3">
+        <h4 class="mb-0 fw-bold"><i class="bi bi-people-fill"></i> Base de Clientes</h4>
+        <a href="{% url 'tutor_criar' %}" class="btn btn-light btn-sm fw-bold text-info">
+            <i class="bi bi-plus-lg"></i> Novo Cliente
         </a>
-    {% empty %}
-        <p class="text-muted">Nenhum tutor cadastrado.</p>
-    {% endfor %}
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="bg-light">
+                <tr>
+                    <th class="ps-4">Nome Completo</th>
+                    <th>Contato</th>
+                    <th>Documento (CPF)</th>
+                    <th class="text-end pe-4">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tutor in tutores %}
+                <tr>
+                    <td class="ps-4 fw-bold">{{ tutor.nome }}</td>
+                    <td><i class="bi bi-telephone text-muted"></i> {{ tutor.telefone }}</td>
+                    <td><small class="text-muted font-monospace">{{ tutor.cpf }}</small></td>
+                    <td class="text-end pe-4">
+                        <div class="btn-group">
+                            <a href="{% url 'tutor_detalhe' tutor.pk %}" class="btn btn-sm btn-outline-info" title="Ficha e Pets"><i class="bi bi-eye"></i></a>
+                            <a href="{% url 'tutor_editar' tutor.pk %}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></a>
+                            <a href="{% url 'tutor_deletar' tutor.pk %}" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="text-center py-4 text-muted">Nenhum cliente cadastrado.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

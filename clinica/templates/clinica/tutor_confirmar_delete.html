@@ -1,0 +1,14 @@
+{% extends 'clinica/base.html' %}
+
+{% block conteudo %}
+<div class="alert alert-danger shadow">
+    <h4>Tem certeza que deseja excluir o cliente "{{ objeto.nome }}"?</h4>
+    <p class="mb-0">Atenção: Todos os animais vinculados a este tutor também serão excluídos!</p>
+    <br>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Sim, Deletar Tudo</button>
+        <a href="{% url 'tutor_lista' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

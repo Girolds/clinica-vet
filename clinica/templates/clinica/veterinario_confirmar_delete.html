@@ -1,0 +1,14 @@
+{% extends 'clinica/base.html' %}
+
+{% block conteudo %}
+<div class="alert alert-danger shadow">
+    <h4>Tem certeza que deseja remover o médico "{{ objeto.nome }}"?</h4>
+    <p>Históricos de consultas vinculados a ele podem ficar sem responsável (ficarão nulos).</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Sim, Remover</button>
+        <a href="{% url 'veterinario_lista' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
