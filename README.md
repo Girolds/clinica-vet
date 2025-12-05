@@ -54,7 +54,7 @@ Siga os passos abaixo de acordo com o seu sistema operacional.
 Primeiro, baixe o código para sua máquina:
 
 
-git clone [https://github.com/Girolds/clinica-vet.git]([(https://github.com/Girolds/clinica-vet.git))
+git clone [https://github.com/Girolds/clinica-vet.git]([(https://github.com/Girolds/clinica-vet))
 
 cd clinica-vet
 
