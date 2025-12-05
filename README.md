@@ -54,7 +54,8 @@ Siga os passos abaixo de acordo com o seu sistema operacional.
 Primeiro, baixe o código para sua máquina:
 
 
-git clone [https://github.com/SEU_USUARIO/clinica-vet.git](https://github.com/SEU_USUARIO/clinica-vet.git)
+git clone [https://github.com/Girolds/clinica-vet.git]([(https://github.com/Girolds/clinica-vet.git))
+
 cd clinica-vet
 
 ### 2. Configurar o Ambiente Virtual
