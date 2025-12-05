@@ -51,12 +51,23 @@
                 </div>
 
                 <div class="d-grid gap-2 mt-4">
-                    <a href="{% url 'animal_editar' animal.pk %}" class="btn btn-success shadow-sm">
-                        <i class="bi bi-pencil-square"></i> Editar Dados
-                    </a>
+                    
                     <a href="{% url 'animal_lista' %}" class="btn btn-outline-secondary">
-                        Voltar para Lista
+                        <i class="bi bi-arrow-left"></i> Voltar para Lista
                     </a>
+
+                    {% if user.is_staff %}
+                        <div class="vr my-2"></div>
+                        
+                        <a href="{% url 'animal_editar' animal.pk %}" class="btn btn-success shadow-sm">
+                            <i class="bi bi-pencil-square"></i> Editar Dados
+                        </a>
+                        
+                        <a href="{% url 'animal_deletar' animal.pk %}" class="btn btn-danger shadow-sm">
+                            <i class="bi bi-trash"></i> Excluir Animal
+                        </a>
+                    {% endif %}
+
                 </div>
             </div>
         </div>

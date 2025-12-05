@@ -31,13 +31,20 @@
                 </div>
 
                 <div class="d-grid gap-2">
-                    <a href="{% url 'veterinario_editar' veterinario.pk %}" class="btn btn-danger">
-                        <i class="bi bi-pencil-square"></i> Editar Perfil
-                    </a>
                     <a href="{% url 'veterinario_lista' %}" class="btn btn-outline-secondary">
-                        Voltar
+                        <i class="bi bi-arrow-left"></i> Voltar
                     </a>
-                </div>
+
+                    {% if user.is_staff %}
+                        <div class="vr my-2"></div> <a href="{% url 'veterinario_editar' veterinario.pk %}" class="btn btn-primary">
+                            <i class="bi bi-pencil-square"></i> Editar Dados
+                        </a>
+                        
+                        <a href="{% url 'veterinario_deletar' veterinario.pk %}" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Excluir Veterinário
+                        </a>
+                    {% endif %}
+                    </div>
             </div>
         </div>
     </div>

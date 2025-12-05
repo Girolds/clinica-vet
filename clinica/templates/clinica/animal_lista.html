@@ -6,9 +6,12 @@
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-success text-white d-flex justify-content-between align-items-center py-3">
                 <h4 class="mb-0 fw-bold"><i class="bi bi-postcard-heart"></i> {{ titulo }}</h4>
-                <a href="{% url 'animal_criar' %}" class="btn btn-light btn-sm fw-bold text-success shadow-sm">
-                    <i class="bi bi-plus-lg"></i> Novo Animal
-                </a>
+                
+                {% if user.is_staff %}
+                    <a href="{% url 'animal_criar' %}" class="btn btn-light btn-sm fw-bold text-success shadow-sm">
+                        <i class="bi bi-plus-lg"></i> Novo Animal
+                    </a>
+                {% endif %}
             </div>
 
             <div class="card-body p-0">
@@ -33,8 +36,11 @@
                                 <td class="text-end pe-4">
                                     <div class="btn-group" role="group">
                                         <a href="{% url 'animal_detalhe' animal.pk %}" class="btn btn-sm btn-outline-secondary" title="Ver Detalhes"><i class="bi bi-eye"></i></a>
-                                        <a href="{% url 'animal_editar' animal.pk %}" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
-                                        <a href="{% url 'animal_deletar' animal.pk %}" class="btn btn-sm btn-outline-danger" title="Excluir"><i class="bi bi-trash"></i></a>
+                                        
+                                        {% if user.is_staff %}
+                                            <a href="{% url 'animal_editar' animal.pk %}" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
+                                            <a href="{% url 'animal_deletar' animal.pk %}" class="btn btn-sm btn-outline-danger" title="Excluir"><i class="bi bi-trash"></i></a>
+                                        {% endif %}
                                     </div>
                                 </td>
                             </tr>

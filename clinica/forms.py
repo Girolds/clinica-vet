@@ -1,10 +1,12 @@
 from django import forms
-from .models import Tutor, Animal, Veterinario, Servico, Agendamento
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from .models import Tutor, Animal, Veterinario, Servico, Agendamento
 
-# Formulário dos Tut.
+# =======================================================
+# FORMULÁRIOS DE NEGÓCIO
+# =======================================================
+
 class TutorForm(forms.ModelForm):
     class Meta:
         model = Tutor
@@ -15,7 +17,6 @@ class TutorForm(forms.ModelForm):
             'cpf': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '000.000.000-00'}),
         }
 
-# Formulário dos Vet.
 class VeterinarioForm(forms.ModelForm):
     class Meta:
         model = Veterinario
@@ -26,7 +27,6 @@ class VeterinarioForm(forms.ModelForm):
             'especialidade': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
-# Formulário dos Animaizinhos
 class AnimalForm(forms.ModelForm):
     class Meta:
         model = Animal
@@ -35,10 +35,9 @@ class AnimalForm(forms.ModelForm):
             'nome': forms.TextInput(attrs={'class': 'form-control'}),
             'especie': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ex: Cachorro, Gato'}),
             'raca': forms.TextInput(attrs={'class': 'form-control'}),
-            'tutor': forms.Select(attrs={'class': 'form-control'}), 
+            'tutor': forms.Select(attrs={'class': 'form-select'}), 
         }
 
-# Formulário de Serviços
 class ServicoForm(forms.ModelForm):
     class Meta:
         model = Servico
@@ -48,20 +47,30 @@ class ServicoForm(forms.ModelForm):
             'valor': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
         }
 
-
 class AgendamentoForm(forms.ModelForm):
     class Meta:
         model = Agendamento
         fields = ['animal', 'veterinario', 'servico', 'data', 'observacao']
         widgets = {
-            'animal': forms.Select(attrs={'class': 'form-control'}),
-            'veterinario': forms.Select(attrs={'class': 'form-control'}),
-            'servico': forms.Select(attrs={'class': 'form-control'}),
+            'animal': forms.Select(attrs={'class': 'form-select'}),
+            'veterinario': forms.Select(attrs={'class': 'form-select'}),
+            'servico': forms.Select(attrs={'class': 'form-select'}),
             'data': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
             'observacao': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
 
+# =======================================================
+# FORMULÁRIOS DE USUÁRIO (Auth)
+# =======================================================
+
 class UsuarioRegisterForm(UserCreationForm):
+    is_admin = forms.BooleanField(
+        required=False, 
+        label="É Administrador?",
+        help_text="Marque se este usuário deve ter acesso administrativo.",
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+    )
+
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email']
@@ -69,8 +78,8 @@ class UsuarioRegisterForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields:
-            self.fields[field].widget.attrs.update({'class': 'form-control'})
-
+            if field != 'is_admin': 
+                self.fields[field].widget.attrs.update({'class': 'form-control'})
 
 class PerfilForm(forms.ModelForm):
     class Meta:
@@ -85,7 +94,6 @@ class PerfilForm(forms.ModelForm):
 
 
 class CustomPasswordChangeForm(PasswordChangeForm):
-    # Injetando CSS do Bootstrap nos campos de senha
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields:

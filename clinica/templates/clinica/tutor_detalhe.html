@@ -24,12 +24,22 @@
                 </ul>
             </div>
             <div class="card-footer bg-white border-0 pb-4 text-center">
-                <a href="{% url 'tutor_editar' tutor.pk %}" class="btn btn-outline-info w-100 mb-2">
-                    <i class="bi bi-pencil"></i> Editar Dados
-                </a>
-                <a href="{% url 'tutor_lista' %}" class="btn btn-link text-muted text-decoration-none btn-sm">
+                
+                <a href="{% url 'tutor_lista' %}" class="btn btn-link text-muted text-decoration-none btn-sm mb-2">
                     <i class="bi bi-arrow-left"></i> Voltar
                 </a>
+
+                {% if user.is_staff %}
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'tutor_editar' tutor.pk %}" class="btn btn-outline-info">
+                            <i class="bi bi-pencil"></i> Editar Dados
+                        </a>
+                        <a href="{% url 'tutor_deletar' tutor.pk %}" class="btn btn-outline-danger">
+                            <i class="bi bi-trash"></i> Excluir Cliente
+                        </a>
+                    </div>
+                {% endif %}
+
             </div>
         </div>
     </div>
@@ -58,7 +68,10 @@
                     <div class="text-center py-5">
                         <i class="bi bi-box-seam text-muted display-4"></i>
                         <p class="mt-3 text-muted">Este cliente ainda não possui animais cadastrados.</p>
-                        <a href="{% url 'animal_criar' %}" class="btn btn-sm btn-success">Cadastrar Pet</a>
+                        
+                        {% if user.is_staff %}
+                            <a href="{% url 'animal_criar' %}" class="btn btn-sm btn-success">Cadastrar Pet</a>
+                        {% endif %}
                     </div>
                     {% endfor %}
                 </div>
