@@ -12,6 +12,14 @@ Projeto desenvolvido como Trabalho Final da disciplina de **Programação para W
 
 ---
 
+## 🎥 Vídeo de Apresentação
+
+Confira o funcionamento do sistema e a explicação das funcionalidades no vídeo abaixo:
+
+[![Assista ao vídeo de apresentação](https://img.youtube.com/vi/63iN5H-n3q4/0.jpg)](https://youtu.be/63iN5H-n3q4)
+
+> *Clique na imagem acima ou [neste link](https://youtu.be/63iN5H-n3q4) para assistir.*
+
 ## 🚀 Funcionalidades Principais
 
 ### 🔒 Autenticação e Segurança
