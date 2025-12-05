@@ -48,7 +48,7 @@ class ServicoForm(forms.ModelForm):
             'valor': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
         }
 
-# Formulário dos Agendamentos
+
 class AgendamentoForm(forms.ModelForm):
     class Meta:
         model = Agendamento

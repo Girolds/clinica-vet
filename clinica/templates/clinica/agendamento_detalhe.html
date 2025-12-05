@@ -1,32 +1,75 @@
 {% extends 'clinica/base.html' %}
-{% block content %}
-<div class="card border-primary mb-3">
-    <div class="card-header bg-primary text-white">
-        <h3>Consulta: {{ agendamento.data|date:"d/m/Y - H:i" }}</h3>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-6">
-                <h5>Paciente</h5>
-                <p>
-                    <strong>Nome:</strong> <a href="{% url 'animal_detalhe' agendamento.animal.pk %}">{{ agendamento.animal.nome }}</a><br>
-                    <strong>Tutor:</strong> {{ agendamento.animal.tutor.nome }}
-                </p>
+
+{% block conteudo %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
+            
+            <div class="card-header bg-primary text-white text-center py-4">
+                <i class="bi bi-calendar-check display-4"></i>
+                <h3 class="mt-2 fw-bold">Detalhes da Consulta</h3>
+                <span class="badge bg-white text-primary fs-6 px-3 py-2 rounded-pill shadow-sm">
+                    {{ agendamento.data|date:"d/m/Y - H:i" }}
+                </span>
             </div>
-            <div class="col-md-6">
-                <h5>Atendimento</h5>
-                <p>
-                    <strong>Veterinário:</strong> {{ agendamento.veterinario.nome }}<br>
-                    <strong>Serviço:</strong> {{ agendamento.servico.descricao }} (R$ {{ agendamento.servico.valor }})
-                </p>
+
+            <div class="card-body p-4 bg-white">
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item py-3 px-0 border-bottom">
+                        <small class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem;">Paciente</small>
+                        <div class="d-flex align-items-center mt-1">
+                            <div class="bg-success text-white rounded-circle p-2 me-3">
+                                <i class="bi bi-postcard-heart"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-0 fw-bold">{{ agendamento.animal.nome }}</h5>
+                                <small class="text-muted">{{ agendamento.animal.raca }} (Tutor: {{ agendamento.animal.tutor.nome }})</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="list-group-item py-3 px-0 border-bottom">
+                        <small class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem;">Veterinário Responsável</small>
+                        <div class="d-flex align-items-center mt-1">
+                            <div class="bg-danger text-white rounded-circle p-2 me-3">
+                                <i class="bi bi-heart-pulse"></i>
+                            </div>
+                            <h5 class="mb-0">Dr(a). {{ agendamento.veterinario.nome }}</h5>
+                        </div>
+                    </div>
+
+                    <div class="list-group-item py-3 px-0 border-bottom">
+                        <small class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem;">Procedimento</small>
+                        <div class="d-flex align-items-center justify-content-between mt-1">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-warning text-dark rounded-circle p-2 me-3">
+                                    <i class="bi bi-tag"></i>
+                                </div>
+                                <h5 class="mb-0">{{ agendamento.servico.descricao }}</h5>
+                            </div>
+                            <span class="fw-bold text-success fs-5">R$ {{ agendamento.servico.valor }}</span>
+                        </div>
+                    </div>
+
+                    {% if agendamento.observacao %}
+                    <div class="list-group-item py-3 px-0">
+                        <small class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem;">Observações Clínicas</small>
+                        <div class="alert alert-light border mt-2">
+                            <i class="bi bi-chat-left-text me-2"></i> {{ agendamento.observacao|linebreaksbr }}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
-        </div>
-        <hr>
-        <h5>Observações:</h5>
-        <p>{{ agendamento.observacao|default:"Nenhuma observação registada." }}</p>
-        
-        <div class="mt-3">
-            <a href="{% url 'agendamento_lista' %}" class="btn btn-secondary">Voltar</a>
+
+            <div class="card-footer bg-light p-3 text-center">
+                <a href="{% url 'agendamento_editar' agendamento.pk %}" class="btn btn-warning shadow-sm px-4">
+                    <i class="bi bi-pencil"></i> Reagendar
+                </a>
+                <a href="{% url 'agendamento_lista' %}" class="btn btn-outline-secondary ms-2 px-4">
+                    Voltar
+                </a>
+            </div>
         </div>
     </div>
 </div>

@@ -1,30 +1,69 @@
 {% extends 'clinica/base.html' %}
 
-{% block content %}
-<div class="card mb-4 border-info">
-    <div class="card-header bg-info text-white">
-        <h3>{{ tutor.nome }}</h3>
+{% block conteudo %}
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-info text-white text-center py-4">
+                <div class="bg-white text-info rounded-circle mx-auto d-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 80px; height: 80px;">
+                    <i class="bi bi-person-fill display-5"></i>
+                </div>
+                <h4 class="mb-0 fw-bold">{{ tutor.nome }}</h4>
+                <span class="badge bg-white text-info bg-opacity-75 mt-2">Cliente</span>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <small class="text-muted fw-bold text-uppercase d-block">Telefone</small>
+                        <i class="bi bi-whatsapp text-success me-1"></i> {{ tutor.telefone }}
+                    </li>
+                    <li class="mb-3">
+                        <small class="text-muted fw-bold text-uppercase d-block">CPF</small>
+                        <i class="bi bi-card-heading text-secondary me-1"></i> {{ tutor.cpf }}
+                    </li>
+                </ul>
+            </div>
+            <div class="card-footer bg-white border-0 pb-4 text-center">
+                <a href="{% url 'tutor_editar' tutor.pk %}" class="btn btn-outline-info w-100 mb-2">
+                    <i class="bi bi-pencil"></i> Editar Dados
+                </a>
+                <a href="{% url 'tutor_lista' %}" class="btn btn-link text-muted text-decoration-none btn-sm">
+                    <i class="bi bi-arrow-left"></i> Voltar
+                </a>
+            </div>
+        </div>
     </div>
-    <div class="card-body">
-        <p><strong>CPF:</strong> {{ tutor.cpf }}</p>
-        <p><strong>Telefone:</strong> {{ tutor.telefone }}</p>
-        <div class="mt-3">
-            <a href="{% url 'tutor_lista' %}" class="btn btn-secondary">Voltar</a>
+
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h5 class="mb-0 fw-bold text-success"><i class="bi bi-postcard-heart me-2"></i> Pets de {{ tutor.nome|truncatewords:1 }}</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    {% for animal in animais %}
+                    <a href="{% url 'animal_detalhe' animal.pk %}" class="list-group-item list-group-item-action p-3 d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-light rounded-circle p-3 me-3 text-success">
+                                <i class="bi bi-emoji-smile"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-0 fw-bold text-dark">{{ animal.nome }}</h5>
+                                <small class="text-muted">{{ animal.especie }} • {{ animal.raca }}</small>
+                            </div>
+                        </div>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                    </a>
+                    {% empty %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-box-seam text-muted display-4"></i>
+                        <p class="mt-3 text-muted">Este cliente ainda não possui animais cadastrados.</p>
+                        <a href="{% url 'animal_criar' %}" class="btn btn-sm btn-success">Cadastrar Pet</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-<h4><i class="bi bi-paw"></i> Animais deste Tutor:</h4>
-<ul class="list-group">
-    {% for animal in animais %}
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            <span>
-                <strong>{{ animal.nome }}</strong> ({{ animal.especie }})
-            </span>
-            <a href="{% url 'animal_detalhe' animal.pk %}" class="btn btn-sm btn-outline-success">Ver Ficha</a>
-        </li>
-    {% empty %}
-        <li class="list-group-item text-muted">Este tutor ainda não possui animais cadastrados.</li>
-    {% endfor %}
-</ul>
 {% endblock %}

@@ -29,14 +29,8 @@ def is_recepcionista(user):
 
 @login_required
 def animal_lista(request):
-    # Recepcionista ou Admin, vê tudo
-    if is_recepcionista(request.user):
-        animais = Animal.objects.all()
-    else:
-        # Tutor vê apenas os animais vinculados ao usuário
-        animais = Animal.objects.filter(tutor__usuario=request.user)
-    
-    contexto = {'animais': animais, 'titulo': 'Meus Animais' if not is_recepcionista(request.user) else 'Todos os Animais'}
+    animais = Animal.objects.all()
+    contexto = {'animais': animais, 'titulo': 'Todos os Animais'}
     return render(request, 'clinica/animal_lista.html', contexto)
 
 # Detail (Detalhar)
@@ -53,10 +47,6 @@ def animal_detalhe(request, pk):
 # Create (Criar)
 @login_required
 def animal_criar(request):
-    # Bloqueio de segurança (somente recepcionistas criam/cadastram novos animais)
-    if not is_recepcionista(request.user):
-        raise PermissionDenied("Apenas recepcionistas podem cadastrar.")
-    
     if request.method == 'POST':
         form = AnimalForm(request.POST)
         if form.is_valid():
@@ -381,13 +371,8 @@ def servico_deletar(request, pk):
 # Read (Ler)
 @login_required
 def agendamento_lista(request):
-    if is_recepcionista(request.user):
-        agendamentos = Agendamento.objects.all().order_by('data')
-    else:
-        # Tutor vê apenas agendamentos dos SEUS animais
-        agendamentos = Agendamento.objects.filter(animal__tutor__usuario=request.user).order_by('data')
-
-    contexto = {'agendamentos': agendamentos, 'titulo': 'Minha Agenda' if not is_recepcionista(request.user) else 'Agenda da Clínica'}
+    agendamentos = Agendamento.objects.all().order_by('data')
+    contexto = {'agendamentos': agendamentos, 'titulo': 'Agenda da Clínica'}
     return render(request, 'clinica/agendamento_lista.html', contexto)
 
 # Detail (Detalhar)
@@ -450,55 +435,5 @@ def agendamento_deletar(request, pk):
         raise PermissionDenied("Apenas recepcionistas podem excluir.") # Bloqueio de segurança
     
     agendamento = get_object_or_404(Agendamento, pk=pk)
-    if request.method == 'POST':
-        agendamento.delete()
-        return redirect('agendamento_lista')
-    
-    contexto = {
-        'objeto': agendamento,
-        'titulo': 'Cancelar Agendamento'
-    }
-    return render(request, 'clinica/agendamento_confirmar_delete.html', contexto)
-
-def registrar_usuario(request):
-    if request.method == 'POST':
-        form = UsuarioRegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            
-            login(request, user)
-            return redirect('index')
-    else:
-        form = UsuarioRegisterForm()
-    
-    return render(request, 'registration/register.html', {'form': form})
-
-
-# Editar Dados Pessoais do usuário
-@login_required
-def editar_perfil(request):
-    if request.method == 'POST':
-        form = PerfilForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect('index')
-    else:
-        form = PerfilForm(instance=request.user)
-    
-    return render(request, 'registration/perfil_editar.html', {'form': form})
-
-# Alterar Senha usuário
-@login_required
-def alterar_senha(request):
-    if request.method == 'POST':
-        # Usando nosso form customizado (Note que ele pede request.user primeiro)
-        form = CustomPasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            user = form.save()
-            # Mantém o usuário logado após mudar a senha (Nativo do Django)
-            update_session_auth_hash(request, user) 
-            return redirect('index')
-    else:
-        form = CustomPasswordChangeForm(request.user)
-
-    return render(request, 'registration/perfil_senha.html', {'form': form})
+    contexto = {'agendamento': agendamento, 'titulo': f'Consulta: {agendamento.animal.nome}'}
+    return render(request, 'clinica/agendamento_detalhe.html', contexto)
