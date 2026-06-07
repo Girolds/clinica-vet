@@ -1,5 +1,12 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 from . import views
+
+# Roteador da API
+router = DefaultRouter()
+router.register(r'api/tutores', views.TutorViewSet)
+router.register(r'api/animais', views.AnimalViewSet)
+router.register(r'api/agendamentos', views.AgendamentoViewSet)
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -31,4 +38,5 @@ urlpatterns = [
     path('registrar/', views.registrar_usuario, name='registrar_usuario'),
     path('perfil/', views.editar_perfil, name='editar_perfil'),
     path('perfil/senha/', views.alterar_senha, name='alterar_senha'),
+    path('', include(router.urls)),
 ]
