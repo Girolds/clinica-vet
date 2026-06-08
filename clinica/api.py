@@ -1,6 +1,9 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from .serializers import TutorSerializer, AnimalSerializer, AgendamentoSerializer
+from rest_framework import viewsets, filters
+from .models import Tutor, Animal, Agendamento 
+
 
 # API REST (ViewSets)
 
