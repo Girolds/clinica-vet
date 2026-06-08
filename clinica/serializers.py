@@ -1,4 +1,4 @@
-# clinica/serializers.py
+from django.utils import timezone
 from rest_framework import serializers
 from .models import Tutor, Animal, Veterinario, Servico, Agendamento
 
@@ -19,3 +19,11 @@ class AgendamentoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Agendamento
         fields = '__all__'
+
+    def validate_data(self, value):
+        """
+        Garante que a consulta não seja agendada no passado.
+        """
+        if value < timezone.now():
+            raise serializers.ValidationError("A data e hora do agendamento não podem ser no passado.")
+        return value

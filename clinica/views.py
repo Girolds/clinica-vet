@@ -1,12 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth import login, update_session_auth_hash
 from .models import Animal, Tutor, Veterinario, Servico, Agendamento
 from .forms import (
     AnimalForm, TutorForm, VeterinarioForm, ServicoForm, AgendamentoForm,
     UsuarioRegisterForm, PerfilForm, CustomPasswordChangeForm
 )
+
+# =======================================================
+# NOVOS IMPORTS PARA A API (DRF)
+# =======================================================
+from rest_framework import viewsets, filters
+from rest_framework.permissions import IsAuthenticated
+from .serializers import TutorSerializer, AnimalSerializer, AgendamentoSerializer
+
 
 def checar_admin(user):
     return user.is_staff
@@ -320,3 +327,35 @@ def agendamento_deletar(request, pk):
         return redirect('agendamento_lista')
     contexto = {'objeto': agendamento, 'titulo': 'Cancelar Agendamento'}
     return render(request, 'clinica/agendamento_confirmar_delete.html', contexto)
+
+
+# =======================================================
+# API REST (ViewSets Protegidos com Busca e Ordenação)
+# =======================================================
+class TutorViewSet(viewsets.ModelViewSet):
+    queryset = Tutor.objects.all()
+    serializer_class = TutorSerializer
+    permission_classes = [IsAuthenticated]
+    
+    # Ativa busca por nome ou CPF do tutor (Ex: /api/tutores/?search=Carlos)
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['nome', 'cpf']
+
+class AnimalViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet que provê o CRUD completo para o model Animal,
+    cumprindo o requisito obrigatório de CRUD completo do model principal.
+    """
+    queryset = Animal.objects.all()
+    serializer_class = AnimalSerializer
+    permission_classes = [IsAuthenticated]
+    
+    # Ativa busca por nome/espécie/raça e ordenação por nome (Ex: /api/animais/?ordering=nome)
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['nome', 'especie', 'raca']
+    ordering_fields = ['nome']
+
+class AgendamentoViewSet(viewsets.ModelViewSet):
+    queryset = Agendamento.objects.all()
+    serializer_class = AgendamentoSerializer
+    permission_classes = [IsAuthenticated]
