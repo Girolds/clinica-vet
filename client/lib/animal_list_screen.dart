@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'api_service.dart';
 import 'login_screen.dart';
+import 'animal_form_screen.dart';
 
 class AnimalListScreen extends StatefulWidget {
   const AnimalListScreen({super.key});
@@ -26,6 +27,61 @@ class _AnimalListScreenState extends State<AnimalListScreen> {
       _animais = dados;
       _isLoading = false;
     });
+  }
+
+  //FUNÇÃO: Apagar animal com confirmação
+  void _apagarAnimal(int id) async {
+    bool confirmar =
+        await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Apagar Paciente'),
+            content: const Text('Tem certeza que deseja apagar este registo?'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('Cancelar'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text(
+                  'Apagar',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+
+    if (confirmar) {
+      setState(() => _isLoading = true);
+      bool sucesso = await _apiService.deleteAnimal(id);
+      if (sucesso) {
+        _loadAnimais(); // Atualiza a lista
+      } else {
+        setState(() => _isLoading = false);
+        if (mounted) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('Erro ao apagar.')));
+        }
+      }
+    }
+  }
+
+  //FUNÇÃO: Abrir o formulário para criar ou editar
+  void _abrirFormulario({Map<String, dynamic>? animal}) async {
+    final resultado = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AnimalFormScreen(animal: animal)),
+    );
+
+    // Se salvou com sucesso no formulário, recarrega a lista
+    if (resultado == true) {
+      setState(() => _isLoading = true);
+      _loadAnimais();
+    }
   }
 
   void _logout() {
@@ -107,32 +163,54 @@ class _AnimalListScreenState extends State<AnimalListScreen> {
                       ),
                     ),
 
-                    // Espécie e Raça
+                    // Espécie, Raça e Etiqueta do Tutor juntas
                     subtitle: Padding(
                       padding: const EdgeInsets.only(top: 4.0),
-                      child: Text(
-                        '${animal['especie']} • ${animal['raca']}',
-                        style: TextStyle(color: Colors.grey.shade700),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${animal['especie']} • ${animal['raca']}',
+                            style: TextStyle(color: Colors.grey.shade700),
+                          ),
+                          const SizedBox(height: 4),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.teal.shade100,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              'Tutor ID: ${animal['tutor']}',
+                              style: TextStyle(
+                                color: Colors.teal.shade900,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 11,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
 
-                    trailing: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.teal.shade100,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        'Tutor: ${animal['tutor_nome'] ?? animal['tutor']}',
-                        style: TextStyle(
-                          color: Colors.teal.shade900,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
+                    // Botões de Ação na direita
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.edit, color: Colors.blue),
+                          onPressed: () =>
+                              _abrirFormulario(animal: animal), // Editar
                         ),
-                      ),
+                        IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          onPressed: () =>
+                              _apagarAnimal(animal['id']), // Apagar
+                        ),
+                      ],
                     ),
                   ),
                 );
@@ -141,16 +219,7 @@ class _AnimalListScreenState extends State<AnimalListScreen> {
 
       // Botão flutuante para adicionar novos animais
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                'Funcionalidade de registo de novo paciente em breve!',
-              ),
-              backgroundColor: Colors.teal,
-            ),
-          );
-        },
+        onPressed: () => _abrirFormulario(),
         backgroundColor: Colors.teal,
         foregroundColor: Colors.white,
         child: const Icon(Icons.add),
