@@ -7,11 +7,12 @@ class ApiService {
   // Configuração do IP:
   // 'http://127.0.0.1:8000' (Web).
   // 'http://10.0.2.2:8000' (Emulador Android)
-  static const String baseUrl = 'http://10.0.2.83';
+  static const String baseUrl = 'http://127.0.0.1:8000';
 
-  static const String clientId = 'n1h2ev2nz8ZIzYa6kd1MAafQYdJJzzKQPTSmxMyh';
+  static const String clientId = '227aw7APqYR4wAvmmWA1XCi8NTxdRGdJPfxrqUME';
   static const String clientSecret =
-      'S9AYnr2wISP8gMoXs12HnXkHp944KAr4HoXKWuo17T661wasSeeTv1PQFu67Aa1tMkLJvParYEEGjk0gfltSfU9SCoGjDz28hExIx3eCqmzBTc6rpogLrkWSsVoqJsCb';
+    'DNNrkyIH3do7dq7idltdI5PaHwAwLgkqj2Vohn0uaL8XgTj5WM5sfEfJRxRY0sN5NtS88jBZBj4Mxb2xPgjs36MtNCZMa9MAliMPzgTqwqpHVKuXbRFGlyDPVu0Fcem7';
+
 
   Future<bool> login(String username, String password) async {
     final url = Uri.parse('$baseUrl/o/token/');
